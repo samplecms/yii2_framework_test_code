@@ -17,6 +17,7 @@ use Yii;
  */
 class Posts extends \yii\mongodb\ActiveRecord
 {
+    static $self;
     /**
      * @inheritdoc
      */
@@ -38,6 +39,7 @@ class Posts extends \yii\mongodb\ActiveRecord
             'updated',
             'uid',
             'status',
+            'category_id',
         ];
     }
 
@@ -47,7 +49,8 @@ class Posts extends \yii\mongodb\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'created', 'updated', 'uid', 'status'], 'safe']
+            [['title', 'content'], 'required'],
+            [['title', 'content','category_id', 'created', 'updated', 'uid', 'status'], 'safe']
         ];
     }
 
@@ -64,6 +67,45 @@ class Posts extends \yii\mongodb\ActiveRecord
             'updated' => Yii::t('app', 'Updated'),
             'uid' => Yii::t('app', 'Uid'),
             'status' => Yii::t('app', 'Status'),
+            'Cagegory_Name' => Yii::t('app', 'Cagegory_Name'),
         ];
     }
+    public function beforeSave($data){
+
+        parent::beforeSave($data);
+        if($this->isNewRecord){
+             $this->created  =  time();
+             
+        }
+
+
+        $this->updated  =  time();
+
+        return true;
+    }
+    public function getCreate_At(){
+
+        return date('Y-m-d', $this->created);
+    }
+
+    public function getCategory()
+    {
+        $cid = 'category'.$this->category_id;
+  
+        $data = static::$self[$cid];
+        if(!$data){
+            $data =  Category::find()->where([ '_id'=> $this->category_id ])->one();
+
+            static::$self[$cid] = $data;
+        }
+        return $data;
+    }
+
+
+    function getCagegory_Name(){
+            $name = $this->category['title'];
+            return $name;
+    }
+
+
 }

@@ -17,6 +17,7 @@ use Yii;
  */
 class Category extends \yii\mongodb\ActiveRecord
 {
+    
     /**
      * @inheritdoc
      */
@@ -47,6 +48,7 @@ class Category extends \yii\mongodb\ActiveRecord
     public function rules()
     {
         return [
+            [['title', ], 'required'],
             [['title', 'created', 'updated', 'uid', 'status', 'sort'], 'safe']
         ];
     }
@@ -66,4 +68,12 @@ class Category extends \yii\mongodb\ActiveRecord
             'sort' => Yii::t('app', 'Sort'),
         ];
     }
+
+    public function getPosts()
+    {
+        return $this->hasMany(Posts::className(), ['_id' => 'category_id']);
+    }
+
+
+
 }

@@ -2,22 +2,32 @@
 
 $params = require(__DIR__ . '/params.php');
 
-$lists_module = ['admin','posts','videos','albums'];
-
+$lists_module = ['admin','posts','videos','albums','category'];
+$module_path = realpath(__DIR__.'/../modules');
+Yii::setAlias('@module_path',$module_path);
+Yii::setAlias('@modules',json_encode($lists_module));
+ 
 foreach($lists_module as $v){
     $modules[$v] =  [
         
             'class' => 'app\modules\\'.$v.'\Module',
         
     ];
+  
+
 }
 
-
+$modules['redactor'] = [
+    'class' => 'yii\redactor\RedactorModule',
+    'uploadDir' => '@webroot/upload',
+    'uploadUrl' => '@web/upload',
+    'imageAllowExtensions'=>['jpg','png','gif']
+];
 
 
 $config = [
     'id' => 'basic',
-    'language'=>'zh_cn',
+    'language'=>'zh-CN',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'modules' => $modules,
@@ -59,8 +69,8 @@ $config = [
         ],
 
         'db' => [
-            'class' => '\yii\mongodb\Connection',
-            'dsn' => 'mongodb://localhost:27017/classcart',
+            'class' => '\yii\mongodb\Database',
+           // 'dsn' => 'mongodb://localhost:27017/classcart',
         ],
         
         'urlManager' => [

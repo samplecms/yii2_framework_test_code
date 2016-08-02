@@ -31,8 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
             '_id',
             'title',
             'content',
-            'created',
-            'updated',
+            [
+                'value'=>$model->cagegory_name,
+                'label'=>\Yii::t('app','Category')
+            ],
+           // 'updated',
             'uid',
             'status',
         ],

@@ -23,6 +23,20 @@ class BaseController extends Controller
     public function init(){
         parent::init();
         $this->theme($this->theme);
+        $lists_module =  json_decode(\Yii::getAlias('@modules'));
+        $module_path =  yii::getAlias('@module_path');
+    
+        foreach($lists_module as $v){
+            $class = '\app\modules\\'.$v.'\Hook';
+            $file = $module_path.'/'.$v.'/Hook.php';  
+            if(file_exists($file)){          
+                $class::init();
+            }
+       }
+
+
+
+
     }
 
     public function theme($theme){

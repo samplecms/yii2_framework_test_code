@@ -24,13 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            '_id',
+          
             'title',
-            'content',
-            'created',
-            'updated',
-            // 'uid',
-            // 'status',
+            [
+                'value'=>'cagegory_name',
+                'label'=>\Yii::t('app','Category')
+            ],
+         
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
